@@ -15,19 +15,19 @@ fun main() {
      * Versão usando comandos de repetição.
      */
     fun filtrarLista(lista: List<Int>, funcao: (Int) -> Boolean): List<Int> {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return listOf<Int>()
+        var novaList = lista.filter(funcao)
+        return novaList
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("filtrarLista([1, 2, 3, 4, 5], { it % 2 == 0 })", listOf(2, 4), filtrarLista(listOf(1, 2, 3, 4, 5), { it % 2 == 0 }))
     assertEquals("filtrarLista([1, 2, 3, 4, 5], { it % 2 != 0 })", listOf(1, 3, 5), filtrarLista(listOf(1, 2, 3, 4, 5), { it % 2 != 0 }))
     assertEquals("filtrarLista([1, 2, 3, 4, 5], { it > 3 })", listOf(4, 5), filtrarLista(listOf(1, 2, 3, 4, 5), { it > 3 }))
     assertEquals("filtrarLista([1, 2, 3, 4, 5], { it < 3 })", listOf(1, 2), filtrarLista(listOf(1, 2, 3, 4, 5), { it < 3 }))
     assertEquals("filtrarLista([1, 2, 3, 4, 5], { it == 3 })", listOf(3), filtrarLista(listOf(1, 2, 3, 4, 5), { it == 3 }))
     println("Todos os testes passaram para a função filtrarLista!")
-    */
+
 
     /**
      * Função que recebe uma lista L de inteiros e uma função F (que recebe inteiro e retorna inteiro),
@@ -36,16 +36,20 @@ fun main() {
      * Versão usando comandos de repetição.
      */
     fun aplicarFuncao(lista: List<Int>, funcao: (Int) -> Int): List<Int> {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return listOf<Int>()
+        var lista2 = mutableListOf<Int>()
+        lista2.addAll(lista)
+        for(i in 0..lista2.size-1){
+            lista2[i] = funcao(lista2[i])
+        }
+        return lista2
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("aplicarFuncao([1, 2, 3, 4, 5], { it * 2 })", listOf(2, 4, 6, 8, 10), aplicarFuncao(listOf(1, 2, 3, 4, 5), { it * 2 }))
     assertEquals("aplicarFuncao([1, 2, 3, 4, 5], { it + 1 })", listOf(2, 3, 4, 5, 6), aplicarFuncao(listOf(1, 2, 3, 4, 5), { it + 1 }))
     println("Todos os testes passaram para a função aplicarFuncao!")
-    */
+
 
     /**
      * Função que recebe uma lista L de inteiros, um valor inicial inteiro A e uma função F que 
@@ -72,12 +76,17 @@ fun main() {
      * Versão usando comandos de repetição.
      */
     fun ehPalindromo(palavra: String): Boolean {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return false
+        var i = 0; var j = palavra.length - 1
+        while(i < j){
+            if(palavra[i] != palavra[j]) return false
+            i += 1
+            j -= 1
+        }
+        return true
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("ehPalindromo(\"ovo\")", true, ehPalindromo("ovo"))
     assertEquals("ehPalindromo(\"arara\")", true, ehPalindromo("arara"))
     assertEquals("ehPalindromo(\"radar\")", true, ehPalindromo("radar"))
@@ -85,5 +94,5 @@ fun main() {
     assertEquals("ehPalindromo(\"rever\")", true, ehPalindromo("rever"))
     assertEquals("ehPalindromo(\"reconhecer\")", false, ehPalindromo("reconhecer"))
     println("Todos os testes passaram para a função ehPalindromo!")
-    */
+
 }
