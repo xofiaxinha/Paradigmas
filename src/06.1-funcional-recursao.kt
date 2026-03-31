@@ -14,8 +14,13 @@ fun main() {
      * Versão usando recursão de cauda.
      */
     fun somaIntervaloRecursivo(a: Int, b: Int): Int {
-        if(a > b) return 0
-        return a + somaIntervaloRecursivo((a+1), b)
+        //if(a > b) return 0
+        //return a + somaIntervaloRecursivo((a+1), b)
+        tailrec fun soma(a1: Int, b1: Int, acc: Int = 0): Int{
+            if(a1>b1) return acc
+            return soma(a1, b1-1, b1+acc)
+        }
+        return soma(a, b)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
@@ -34,11 +39,17 @@ fun main() {
      * Versão usando recursão de cauda.
      */
     fun somaParesIntervaloRecursivo(a: Int, b: Int): Int {
-        if(a > b) return 0
+        //if(a > b) return 0
 
-        if(a % 2 == 0) return a + somaParesIntervaloRecursivo((a+2), b)
+        //if(a % 2 == 0) return a + somaParesIntervaloRecursivo((a+2), b)
 
-        return somaParesIntervaloRecursivo((a+1), b)
+        //return somaParesIntervaloRecursivo((a+1), b)
+        tailrec fun soma(a1: Int, b1: Int, acc: Int = 0): Int{
+            if(a1>b1) return acc
+            return soma(a1+2, b1, acc+a1)
+        }
+        if(a % 2 == 0) return soma(a, b)
+        else return soma(a+1, b)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
@@ -85,7 +96,11 @@ fun main() {
      */
     fun fibonacci(n: Int): Int {
         if(n == 0 || n == 1) return n
-        return fibonacci(n - 1) + fibonacci(n - 2)
+        tailrec fun fi(n: Int, ant1: Int=0, ant2: Int=1): Int{
+            if(n == 2) return ant1+ant2
+            return fi(n-1, ant2, ant1+ant2)
+        }
+        return fi(n)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
