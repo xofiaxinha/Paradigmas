@@ -1,4 +1,4 @@
-
+package Imperativo
 fun main() {
 
     // Função auxiliar para verificar os resultados dos testes (não modifique)
@@ -15,7 +15,10 @@ fun main() {
      * Versão usando comandos de repetição.
      */
     fun filtrarLista(lista: List<Int>, funcao: (Int) -> Boolean): List<Int> {
-        var novaList = lista.filter(funcao)
+        var novaList = mutableListOf<Int>()
+        for(i in lista){
+            if(funcao(i)) novaList.add(i)
+        }
         return novaList
     }
 
@@ -60,16 +63,19 @@ fun main() {
      * Versão usando comandos de repetição.
      */
     fun dobrarLista(lista: List<Int>, valorInicial: Int, funcao: (Int, Int) -> Int): Int {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return 0
+        var valor = valorInicial
+        for(i in lista){
+            valor = funcao(valor, i)
+        }
+        return valor
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("dobrarLista([1, 2, 3, 4, 5], 0, { a, b -> a + b })", 15, dobrarLista(listOf(1, 2, 3, 4, 5), 0, { a, b -> a + b }))
     assertEquals("dobrarLista([1, 2, 3, 4, 5], 1, { a, b -> a * b })", 120, dobrarLista(listOf(1, 2, 3, 4, 5), 1, { a, b -> a * b }))
     println("Todos os testes passaram para a função dobrarLista!")
-    */
+
 
     /**
      * Função que recebe uma string S e retorna um booleano indicando se S é um palíndromo.

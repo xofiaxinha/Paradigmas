@@ -1,4 +1,4 @@
-
+package Imperativo
 fun main() {
 
     // Função auxiliar para verificar os resultados dos testes (não modifique)
@@ -99,9 +99,8 @@ fun main() {
         }
 
         for((numero, qtd) in sapatosEsquerdos){
-            if(sapatosDireitos[numero]!!.compareTo(qtd) == 0) pares += qtd
-            else if(sapatosDireitos[numero]!!.compareTo(qtd) == 1) pares += sapatosDireitos[numero]!!.minus(qtd)
-            else pares += qtd - sapatosDireitos[numero]!!
+            if(sapatosDireitos.getOrDefault(numero, 0).compareTo(qtd) >= 0) pares += qtd
+            else pares += sapatosDireitos.getOrDefault(numero, 0)
         }
         /*
         var listaMutavel = sapatos.toMutableList()
@@ -121,12 +120,12 @@ fun main() {
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
 
     assertEquals("contarParesSapatos(listOf(40 to 'D', 41 to 'E', 41 to 'D', 40 to 'E'))", 2, contarParesSapatos(listOf(40 to 'D', 41 to 'E', 41 to 'D', 40 to 'E')))
-    //assertEquals("contarParesSapatos(listOf(38 to 'E', 39 to 'E', 40 to 'D', 38 to 'D', 40 to 'D', 37 to 'E'))", 1, contarParesSapatos(listOf(38 to 'E', 39 to 'E', 40 to 'D', 38 to 'D', 40 to 'D', 37 to 'E')))
-    //assertEquals("contarParesSapatos(listOf(30 to 'E', 31 to 'E', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D'))", 4, contarParesSapatos(listOf(30 to 'E', 31 to 'E', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D')))
-    //assertEquals("contarParesSapatos(listOf(44 to 'D', 40 to 'E', 44 to 'D', 43 to 'E', 42 to 'E', 40 to 'D', 41 to 'D', 42 to 'D', 43 to 'D', 43 to 'E'))", 3, contarParesSapatos(listOf(44 to 'D', 40 to 'E', 44 to 'D', 43 to 'E', 42 to 'E', 40 to 'D', 41 to 'D', 42 to 'D', 43 to 'D', 43 to 'E')))
-    //assertEquals("contarParesSapatos(listOf(59 to 'D', 59 to 'E', 59 to 'D', 60 to 'D', 59 to 'D', 60 to 'D', 60 to 'E', 59 to 'E', 59 to 'D', 60 to 'D'))", 3, contarParesSapatos(listOf(59 to 'D', 59 to 'E', 59 to 'D', 60 to 'D', 59 to 'D', 60 to 'D', 60 to 'E', 59 to 'E', 59 to 'D', 60 to 'D')))
-    //assertEquals("contarParesSapatos(listOf(56 to 'D', 59 to 'D', 58 to 'E', 56 to 'D', 60 to 'E', 56 to 'D', 57 to 'E', 59 to 'E', 58 to 'D', 56 to 'D', 57 to 'D', 60 to 'E'))", 3, contarParesSapatos(listOf(56 to 'D', 59 to 'D', 58 to 'E', 56 to 'D', 60 to 'E', 56 to 'D', 57 to 'E', 59 to 'E', 58 to 'D', 56 to 'D', 57 to 'D', 60 to 'E')))
-    //assertEquals("contarParesSapatos(listOf(40 to 'D', 41 to 'E', 41 to 'D', 40 to 'E'))", 2, contarParesSapatos(listOf(40 to 'D', 41 to 'E', 41 to 'D', 40 to 'E')))
+    assertEquals("contarParesSapatos(listOf(38 to 'E', 39 to 'E', 40 to 'D', 38 to 'D', 40 to 'D', 37 to 'E'))", 1, contarParesSapatos(listOf(38 to 'E', 39 to 'E', 40 to 'D', 38 to 'D', 40 to 'D', 37 to 'E')))
+    assertEquals("contarParesSapatos(listOf(30 to 'E', 31 to 'E', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D'))", 4, contarParesSapatos(listOf(30 to 'E', 31 to 'E', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D', 31 to 'D', 31 to 'E', 30 to 'D', 31 to 'D')))
+    assertEquals("contarParesSapatos(listOf(44 to 'D', 40 to 'E', 44 to 'D', 43 to 'E', 42 to 'E', 40 to 'D', 41 to 'D', 42 to 'D', 43 to 'D', 43 to 'E'))", 3, contarParesSapatos(listOf(44 to 'D', 40 to 'E', 44 to 'D', 43 to 'E', 42 to 'E', 40 to 'D', 41 to 'D', 42 to 'D', 43 to 'D', 43 to 'E')))
+    assertEquals("contarParesSapatos(listOf(59 to 'D', 59 to 'E', 59 to 'D', 60 to 'D', 59 to 'D', 60 to 'D', 60 to 'E', 59 to 'E', 59 to 'D', 60 to 'D'))", 3, contarParesSapatos(listOf(59 to 'D', 59 to 'E', 59 to 'D', 60 to 'D', 59 to 'D', 60 to 'D', 60 to 'E', 59 to 'E', 59 to 'D', 60 to 'D')))
+    assertEquals("contarParesSapatos(listOf(56 to 'D', 59 to 'D', 58 to 'E', 56 to 'D', 60 to 'E', 56 to 'D', 57 to 'E', 59 to 'E', 58 to 'D', 56 to 'D', 57 to 'D', 60 to 'E'))", 3, contarParesSapatos(listOf(56 to 'D', 59 to 'D', 58 to 'E', 56 to 'D', 60 to 'E', 56 to 'D', 57 to 'E', 59 to 'E', 58 to 'D', 56 to 'D', 57 to 'D', 60 to 'E')))
+    assertEquals("contarParesSapatos(listOf(40 to 'D', 41 to 'E', 41 to 'D', 40 to 'E'))", 2, contarParesSapatos(listOf(40 to 'D', 41 to 'E', 41 to 'D', 40 to 'E')))
     println("Todos os testes passaram para a função contarParesSapatos!")
 
 }
