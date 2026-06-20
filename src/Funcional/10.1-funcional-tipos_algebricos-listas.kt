@@ -30,10 +30,10 @@ fun main() {
      * Se for um triângulo, use a fórmula (base * altura) / 2.
      */
     fun calcularArea(forma: Forma): Double{
-        return when(forma){
-            is Circulo -> PI * forma.raio.pow(2)
+        return when (forma){
+            is Circulo -> Math.PI * forma.raio * forma.raio
             is Retangulo -> forma.largura * forma.altura
-            is Triangulo -> (forma.base * forma.altura) / 2
+            is Triangulo -> (forma.base * forma.altura)/2
         }
     }
 
@@ -50,10 +50,12 @@ fun main() {
      * Obs.: Quanto terminar, experimente avaliar apenas número e adição, para ver o erro de compilação indicando que o 
      *       when precisa ser exaustivo (faltando a multiplicação).
      */
-    fun avaliarExpressao(expressao: Expressao): Int = when (expressao) {
-        is Numero -> expressao.valor
-        is Adicao -> avaliarExpressao(expressao.esquerda) + avaliarExpressao(expressao.direita)
-        is Multiplicacao -> avaliarExpressao(expressao.esquerda) * avaliarExpressao(expressao.direita)
+    fun avaliarExpressao(expressao: Expressao): Int {
+        return when(expressao) {
+            is Adicao -> avaliarExpressao(expressao.esquerda) + avaliarExpressao(expressao.direita)
+            is Numero -> expressao.valor
+            is Multiplicacao -> avaliarExpressao(expressao.esquerda) * avaliarExpressao(expressao.direita)
+        }
     }
 
     assertEquals("avaliarExpressao", 11, avaliarExpressao(Adicao(Numero(5), Multiplicacao(Numero(2), Numero(3)))))
@@ -66,13 +68,10 @@ fun main() {
      * Uma lista com pelo menos um elemento (Cons) tem comprimento 1 + comprimento da lista restante (tail).
      */
     fun <A> comprimentoLista(lista: Lista<A>): Int {
-        tailrec fun soma(lista: Lista<A>, acc: Int): Int{
-            return when (lista){
-                is Nil -> acc
-                is Cons -> soma(lista.tail, acc + 1)
-            }
+        return when (lista){
+            is Nil -> 0
+            is Cons -> 1 + comprimentoLista(lista.tail)
         }
-        return soma(lista, 0)
     }
 
     val lista1: Lista<Int> = Cons(1, Cons(2, Cons(3, Nil)))
@@ -88,11 +87,14 @@ fun main() {
      * Obs.: filter/map/fold são definidas para 'list', não para 'Lista'.
      */
     fun <A> inverterLista(lista: Lista<A>): Lista<A> {
-        fun inverterAux(lista: Lista<A>, acumulador: Lista<A>): Lista<A> = when (lista) {
-            is Nil -> acumulador
-            is Cons -> inverterAux(lista.tail, Cons(lista.head, acumulador))
+        fun <A> aux(acc: Lista<A> = Nil, lista: Lista<A>): Lista<A>{
+            return when (lista){
+                is Nil -> acc
+                is Cons -> aux(Cons(lista.head, acc), lista.tail)
+            }
         }
-        return inverterAux(lista, Nil)
+
+        return aux(Nil, lista)
     }
 
     val listaInvertida1: Lista<Int> = Cons(3, Cons(2, Cons(1, Nil)))
@@ -106,12 +108,14 @@ fun main() {
      * Encontra o máximo valor em uma lista de Int representada pelo tipo 'Lista<Int>'.
      * Para listas vazias, retorne Int.MIN_VALUE.
      */
-    fun maximoLista(lista: Lista<Int>): Int = when (lista) {
-        Nil -> Int.MIN_VALUE
-        is Cons -> when(lista.tail){
-            Nil -> lista.head
-            else -> max(lista.head, maximoLista(lista.tail))
+    fun maximoLista(lista: Lista<Int>): Int {
+        tailrec fun maximo(lista: Lista<Int>, maiorAtual: Int = Int.MIN_VALUE): Int{
+            return when (lista){
+                is Nil -> maiorAtual
+                is Cons -> if(lista.head > maiorAtual) maximo(lista.tail, lista.head) else maximo(lista.tail, maiorAtual)
+            }
         }
+        return maximo(lista)
     }
 
     val listaMax: Lista<Int> = Cons(5, Cons(10, Cons(2, Cons(15, Nil))))
@@ -124,9 +128,11 @@ fun main() {
      * Dica: Percorra recursivamente a primeira lista. 
      *       Recursivamente, adicione a cauda da primeira lista no início da segunda lista.
      */
-    fun <A> concatenaListas(lista1: Lista<A>, lista2: Lista<A>): Lista<A> = when (lista1) {
-        is Nil -> lista2
-        is Cons -> Cons(lista1.head, concatenaListas(lista1.tail, lista2))
+    fun <A> concatenaListas(lista1: Lista<A>, lista2: Lista<A>): Lista<A> {
+        return when (lista1){
+            is Nil -> lista2
+            is Cons -> Cons(lista1.head, concatenaListas(lista1.tail, lista2))
+        }
     }
 
     val r1: Lista<Int> = Cons(1, Cons(2, Cons(3, Cons(4, Nil))))

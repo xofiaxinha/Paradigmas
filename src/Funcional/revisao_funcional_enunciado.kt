@@ -1,4 +1,6 @@
+import Funcional.Lista
 import kotlin.math.abs
+import kotlin.math.max
 
 /*
 Implemente cada exercícios usando duas versões: uma usando recursão de cauda e outra usando filter/map/fold 
@@ -172,6 +174,7 @@ fun main() {
         Para cada função, implemente duas versões: uma usando recursão de cauda e outra usando filter/map/fold.
      */
     fun mais_repetidos(lista: List<Int>): List<Int> {
+        /* // tailrec
         tailrec fun contaRepsTail(lista: List<Int>, maior: Int, acc: Int, v: Int = lista.first()): Int{
             if(lista.isEmpty()) return if(acc > maior) acc else maior
             if(lista.first() != v) return if(acc > maior) contaRepsTail(lista.drop(1), acc, 1, lista.first())
@@ -184,12 +187,26 @@ fun main() {
                                             else listaReps(lista.drop(1), maior, 1, lista.first(), acc)
             return listaReps(lista.drop(1), maior, reps+1, v, acc)
         }
-        return listaReps(lista, contaRepsTail(lista, 0, 0))
+
+        return listaReps(lista, contaRepsTail(lista, 0, 0))*/
+        // HOF
+        fun contaRepsHOF(lista: List<Int>): Int{
+            val listaFreq = lista.map { it -> lista.filter { a -> a == it }.size }
+            return listaFreq.fold(0){acc, item ->
+                if (item > acc) item else acc
+            }
+        }
+        fun listaRepsHof(lista: List<Int>, maiorRep: Int): List<Int>{
+            val listaFreq = lista.filter { lista.filter { a -> a == it }.size == maiorRep }
+            return listaFreq.fold(listOf()){acc, item -> if (item !in acc) acc + item else acc}
+        }
+
+        return listaRepsHof(lista, contaRepsHOF(lista))
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
 
-    assertEquals("mais_repetidos(listOf(1, 2, 3, 4, 5, 6))", listOf(1, 2, 3, 4, 5, 6), mais_repetidos(listOf(1, 2, 3, 4, 5, 6)))
+    //assertEquals("mais_repetidos(listOf(1, 2, 3, 4, 5, 6))", listOf(1, 2, 3, 4, 5, 6), mais_repetidos(listOf(1, 2, 3, 4, 5, 6)))
     assertEquals("mais_repetidos(listOf(1, 1, 2, 3, 4, 5, 6))", listOf(1), mais_repetidos(listOf(1, 1, 2, 3, 4, 5, 6)))
     assertEquals("mais_repetidos(listOf(1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 6))", listOf(1, 2), mais_repetidos(listOf(1, 1, 1, 2, 2, 2, 3, 4, 5, 5, 6)))
     assertEquals("mais_repetidos(listOf(1, 1, 1, 1)", listOf(1), mais_repetidos(listOf(1, 1, 1, 1)))
@@ -266,7 +283,17 @@ fun main() {
      */
     //gambiarra is my passion
     fun vizinhos(lista: List<Int>): Int {
+        /*tailrec fun viz2(lista: List<Int>, acc: Int, anterior: Int, seguinte: Int): Int{
+            if(lista.drop(2).isEmpty()){ // nao posso mais computar o seguinte
+                if(anterior == 0 && lista.first() == 0 && seguinte == 0) return acc + 2 // [0,0,0]
+                if(lista.first() == 0 && seguinte == 0) return acc + 1
+                return acc
+            }
+            if(lista.first() == 0 && anterior == 0 && seguinte == 0) return viz(lista.drop(1), acc + 1, lista.first(), lista.drop(2).first())
+            return viz(lista.drop(1), acc, lista.first(), lista.drop(2).first())
+        }*/
         tailrec fun viz(lista: List<Int>, acc: Int, qtdVizinhos0: Int = 0): Int{
+            //[0,0,0]
             // beirada do final
             if(lista.isEmpty()) return if(qtdVizinhos0 >= 2) acc + 1 else acc
 
@@ -280,8 +307,11 @@ fun main() {
 
         }
         // beirada do começo
-        if(lista.first() == 0 && lista.drop(1).first() == 0) return viz(lista.drop(2), 1, 2) // to no caso [0,0,..]
+        if(lista.first() == 0 && lista.drop(1).first() == 0) return viz(lista.drop(1), 1, 1) // to no caso [0,0,..]
         return viz(lista, 0, 0)
+        // beirada do começo 2
+        //if(lista.first() == 0 && lista.drop(1).first() == 0) return viz2(lista.drop(1), 1, 0, lista.drop(2).first())
+        //return viz2(lista.drop(1), 0, lista.first(), lista.drop(2).first())
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>

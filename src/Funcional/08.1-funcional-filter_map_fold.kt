@@ -62,10 +62,8 @@ fun main() {
      * Versão usando map/filter/fold.
      */
     fun blackjack(pontos: Int, ases: Int): Int {
-        var cartas = mutableListOf<Int>()
-        for(i in 1..ases) cartas.add(i)
-
-        return cartas.fold(pontos) {acc, _ -> if(acc > 21) acc - 10 else acc}
+        if(ases == 0) return pontos
+        return (1..ases).fold(pontos) {acc, _ -> if(acc > 21) acc - 10 else acc}
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
@@ -92,7 +90,7 @@ fun main() {
      */
     fun fibonacci(n: Int): Int {
         if (n == 0) return 0
-        if (n == 1 || n == 2) return 1
+        if (n == 1) return 1
         var a = (2..n).fold(Pair(0, 1)){acc, _ -> Pair(acc.second, acc.second + acc.first)}
         return a.second
     }
@@ -116,17 +114,16 @@ fun main() {
      * Versão usando map/filter/fold.
      */
     fun somaFuncaoLista(lista: List<Int>, funcao: (Int) -> Int): Int {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return 0
+        return lista.fold(0){acc, i -> acc + funcao(i)}
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("somaFuncaoLista(listOf(1, 2, 3, 4), { it })", 10, somaFuncaoLista(listOf(1, 2, 3, 4), { it }))
     assertEquals("somaFuncaoLista(listOf(1, 2, 3, 4), { it * 2 })", 20, somaFuncaoLista(listOf(1, 2, 3, 4), { it * 2 }))
     assertEquals("somaFuncaoLista(listOf(1, 2, 3, 4), { it * 3 })", 30, somaFuncaoLista(listOf(1, 2, 3, 4), { it * 3 }))
     assertEquals("somaFuncaoLista(listOf(1, 2, 3, 4), { it * 4 })", 40, somaFuncaoLista(listOf(1, 2, 3, 4), { it * 4 }))
     assertEquals("somaFuncaoLista(listOf(1, 2, 3, 4), { it * 5 })", 50, somaFuncaoLista(listOf(1, 2, 3, 4), { it * 5 }))
     println("Todos os testes passaram para a função somaFuncaoLista!")
-    */
+
 }
