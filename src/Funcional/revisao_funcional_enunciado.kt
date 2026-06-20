@@ -1,5 +1,6 @@
+import kotlin.math.abs
 
-/* 
+/*
 Implemente cada exercícios usando duas versões: uma usando recursão de cauda e outra usando filter/map/fold 
 */
 
@@ -228,19 +229,23 @@ fun main() {
         Saída: a quantidade de movimentos de parkour.
      */
     fun parkour(cenario: List<Int>): Int {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return 0
+        tailrec fun parku(cenario: List<Int>, ant: Int, mov: Int): Int{
+            if(cenario.isEmpty()) return mov
+            return if(abs(cenario.first() - ant) >= 2) parku(cenario.drop(1), cenario.first(), mov+1)
+            else parku(cenario.drop(1), cenario.first(), mov)
+        }
+        return parku(cenario.drop(1), cenario.first(), 0)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("parkour(listOf(1, 1, 3, 3, 4, 6, 4, 2, 2, 1))", 4, parkour(listOf(1, 1, 3, 3, 4, 6, 4, 2, 2, 1)))
     assertEquals("parkour(listOf(1, 2, 1, 2, 3))", 0, parkour(listOf(1, 2, 1, 2, 3)))
     assertEquals("parkour(listOf(4, 2, 5, 4, 5, 3))", 3, parkour(listOf(4, 2, 5, 4, 5, 3)))
     assertEquals("parkour(listOf(1, 3, 5, 7, 6, 5, 4, 3))", 3, parkour(listOf(1, 3, 5, 7, 6, 5, 4, 3)))
     assertEquals("parkour(listOf(4, 2, 5, 3, 6, 4, 3, 4, 3, 2, 3, 2, 3, 5))", 6, parkour(listOf(4, 2, 5, 3, 6, 4, 3, 4, 3, 2, 3, 2, 3, 5)))
     println("Todos os testes passaram para a função parkour!")
-    */
+
 
 
     /*
@@ -259,13 +264,28 @@ fun main() {
         Entrada: [0, 0, 0, 0, 0]
         Saída: 5
      */
+    //gambiarra is my passion
     fun vizinhos(lista: List<Int>): Int {
-        // <FORNEÇA AQUI SUA SOLUÇÃO>
-        return 0
+        tailrec fun viz(lista: List<Int>, acc: Int, qtdVizinhos0: Int = 0): Int{
+            // beirada do final
+            if(lista.isEmpty()) return if(qtdVizinhos0 >= 2) acc + 1 else acc
+
+            if(lista.first() == 0) { // se for 0
+                return if(qtdVizinhos0 >= 2) viz(lista.drop(1), acc + 1, qtdVizinhos0 + 1)
+                else viz(lista.drop(1), acc, qtdVizinhos0 + 1)
+            }
+
+            // se for 1 faz nada bem dize
+            return viz(lista.drop(1), acc, 0)
+
+        }
+        // beirada do começo
+        if(lista.first() == 0 && lista.drop(1).first() == 0) return viz(lista.drop(2), 1, 2) // to no caso [0,0,..]
+        return viz(lista, 0, 0)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
-    /*
+
     assertEquals("vizinhos(listOf(0, 1, 0, 0, 1))", 0, vizinhos(listOf(0, 1, 0, 0, 1)))
     assertEquals("vizinhos(listOf(0, 0, 0, 0, 0))", 5, vizinhos(listOf(0, 0, 0, 0, 0)))
     assertEquals("vizinhos(listOf(1, 1, 0, 0))", 1, vizinhos(listOf(1, 1, 0, 0)))
@@ -273,5 +293,4 @@ fun main() {
     assertEquals("vizinhos(listOf(1, 0, 0, 0, 0, 0, 1))", 3, vizinhos(listOf(1, 0, 0, 0, 0, 0, 1)))
     assertEquals("vizinhos(listOf(0, 1, 0, 0, 1, 0))", 0, vizinhos(listOf(0, 1, 0, 1, 0)))
     println("Todos os testes passaram para a função vizinhos!")
-    */
 }
