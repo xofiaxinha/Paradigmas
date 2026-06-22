@@ -45,14 +45,33 @@ fun main() {
         Saída: 3, 5
      */
     fun cobra(N: Int, X: Int, Y: Int, C: Char, S: Int): Pair<Int, Int> {
-        tailrec fun cobrinha(N: Int, X: Int, Y: Int, C: Char, S: Int): Pair<Int, Int> {
+        /*tailrec fun cobrinha(N: Int, X: Int, Y: Int, C: Char, S: Int): Pair<Int, Int> {
             if(S == 0) return Pair(X, Y)
             if(C == 'D') return if(Y == N-1) cobrinha(N, X, 0, C,S-1) else cobrinha(N, X, Y+1, C, S-1)
             if(C == 'U') return if(Y == 0) cobrinha(N, X, N-1, C,S-1) else cobrinha(N, X, Y-1, C, S-1)
             if(C == 'L') return if(X == 0) cobrinha(N, N-1, Y, C,S-1) else cobrinha(N, X-1, Y, C, S-1)
             return if(X == N-1) cobrinha(N, 0, Y, C, S-1) else cobrinha(N, X+1, Y, C, S-1)
-        }
         return cobrinha(N, X, Y, C, S)
+        }*/
+        fun cobrinhaHOF(N: Int, X: Int, Y: Int, C: Char, S: Int): Pair<Int, Int>{
+            val rangeAux = (1..S)
+            //val par =
+            //
+            val par = when(C){
+                'D' -> rangeAux.fold(Pair(X,Y)){acc, _ -> Pair(acc.first, acc.second+1)}
+                'U' -> rangeAux.fold(Pair(X,Y)){acc, _ -> Pair(acc.first, acc.second-1)}
+                'L' -> rangeAux.fold(Pair(X,Y)){acc, _ -> Pair(acc.first - 1, acc.second)}
+                'R' -> rangeAux.fold(Pair(X,Y)){acc, _ -> Pair(acc.first + 1, acc.second)}
+                else -> Pair(X,Y)
+            }
+            return when{
+                C == 'U' && par.second < 0 -> if(par.second % N == 0) Pair(par.first, 0) else Pair(par.first, N + (par.second % N))
+                C == 'L' && par.first < 0 -> if(par.first % N == 0) Pair(0, par.second) else Pair(N + (par.first % N), par.second)
+                else -> Pair(par.first % N, par.second % N)
+            }
+        }
+
+        return cobrinhaHOF(N,X,Y,C,S)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
@@ -135,11 +154,19 @@ fun main() {
                     E assim por diante. No último salto ele atinge 10 cm, então ele sai do poço e não escorrega mais.
     */
     fun saltosSapo(p: Int, s: Int, e: Int): List<Int> {
-        tailrec fun sapinho(P: Int, s: Int, e: Int, d: Int = 0, p: Int = P, acc: List<Int> = emptyList()): List<Int>{
+        /*tailrec fun sapinho(P: Int, s: Int, e: Int, d: Int = 0, p: Int = P, acc: List<Int> = emptyList()): List<Int>{
             if(p - s == 0) return acc + listOf(d+s) else if(p-s < 0) return acc
             return sapinho(P, s, e, d+s-e, p - s + e, acc + listOf(d+s))
         }
-        return sapinho(p, s, e)
+        return sapinho(p, s, e)*/
+        fun sapinhoHOF(p: Int, s: Int, e:Int): List<Int>{
+            val listaAux = (0..p/(s-e)) // o minimo de pulos que o sapo vai dar
+            return listaAux.fold(listOf(s)){acc, _ ->
+                if((acc.first() - e ) + s > p) acc
+                else listOf((acc.first() - e) + s) + acc
+            }.fold(listOf()){acc, i -> listOf(i) + acc }
+        }
+        return sapinhoHOF(p,s,e)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
@@ -192,13 +219,13 @@ fun main() {
         // HOF
         fun contaRepsHOF(lista: List<Int>): Int{
             val listaFreq = lista.map { it -> lista.filter { a -> a == it }.size }
-            return listaFreq.fold(0){acc, item ->
-                if (item > acc) item else acc
+            return listaFreq.fold(0){maiorAteAgora, item ->
+                if (item > maiorAteAgora) item else maiorAteAgora
             }
         }
         fun listaRepsHof(lista: List<Int>, maiorRep: Int): List<Int>{
-            val listaFreq = lista.filter { lista.filter { a -> a == it }.size == maiorRep }
-            return listaFreq.fold(listOf()){acc, item -> if (item !in acc) acc + item else acc}
+            val listaFreq = lista.filter { it -> lista.filter { a -> a == it }.size == maiorRep }
+            return listaFreq.toSet().toList()//fold(listOf()){acc, item -> if (item !in acc) acc + item else acc}
         }
 
         return listaRepsHof(lista, contaRepsHOF(lista))
@@ -246,12 +273,18 @@ fun main() {
         Saída: a quantidade de movimentos de parkour.
      */
     fun parkour(cenario: List<Int>): Int {
-        tailrec fun parku(cenario: List<Int>, ant: Int, mov: Int): Int{
+        /*tailrec fun parku(cenario: List<Int>, ant: Int, mov: Int): Int{
             if(cenario.isEmpty()) return mov
             return if(abs(cenario.first() - ant) >= 2) parku(cenario.drop(1), cenario.first(), mov+1)
             else parku(cenario.drop(1), cenario.first(), mov)
         }
-        return parku(cenario.drop(1), cenario.first(), 0)
+        return parku(cenario.drop(1), cenario.first(), 0)*/
+        fun parkuHOF(cenario: List<Int>): Int{
+            return cenario.fold(Pair(cenario.first(), 0)) {(anterior, saltos), i ->
+                if(abs(anterior-i) >= 2) Pair(i, saltos+1) else Pair(i, saltos)
+            }.second
+        }
+        return parkuHOF(cenario)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
@@ -292,7 +325,7 @@ fun main() {
             if(lista.first() == 0 && anterior == 0 && seguinte == 0) return viz(lista.drop(1), acc + 1, lista.first(), lista.drop(2).first())
             return viz(lista.drop(1), acc, lista.first(), lista.drop(2).first())
         }*/
-        tailrec fun viz(lista: List<Int>, acc: Int, qtdVizinhos0: Int = 0): Int{
+        /*tailrec fun viz(lista: List<Int>, acc: Int, qtdVizinhos0: Int = 0): Int{
             //[0,0,0]
             // beirada do final
             if(lista.isEmpty()) return if(qtdVizinhos0 >= 2) acc + 1 else acc
@@ -309,9 +342,26 @@ fun main() {
         // beirada do começo
         if(lista.first() == 0 && lista.drop(1).first() == 0) return viz(lista.drop(1), 1, 1) // to no caso [0,0,..]
         return viz(lista, 0, 0)
+        */
         // beirada do começo 2
         //if(lista.first() == 0 && lista.drop(1).first() == 0) return viz2(lista.drop(1), 1, 0, lista.drop(2).first())
         //return viz2(lista.drop(1), 0, lista.first(), lista.drop(2).first())
+        fun vizHOF(lista: List<Int>): Int{
+            //beirada do começo
+            val beirada = if(lista.first() == 0 && lista.drop(1).first() == 0) 1 else 0
+            val vizinhos = lista.drop(1).fold(Pair(lista.first(), beirada)){(anterior, qtd0), i ->
+                if(anterior == 0 && i == 0) Pair(i, qtd0+1)
+                else {
+                    if(i == 1) {
+                        if(qtd0 <= 0) Pair(i, 0) else Pair(i, qtd0 - 1)
+                    }
+                    else Pair(i, qtd0)
+                }
+            }.second
+            return vizinhos
+        }
+
+        return vizHOF(lista)
     }
 
     // <INCLUA O TRECHO ABAIXO PARA TESTAR SUA SOLUÇÃO>
