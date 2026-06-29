@@ -43,7 +43,7 @@ Exemplos:
 % <FORNEÇA AQUI SUA SOLUÇÃO>
 
 age_ver([_, I]) :- I >= 18.
-justAge([_,B], B).
+justName([A,_], A).
 
 my_maplist(_, [], []).
 my_maplist(Pred, [A], [R]) :-
@@ -62,9 +62,8 @@ my_include(Pred, [A|B], R) :-
     my_include(Pred, B, R).
 
 allowed_guests(L, A) :-
-    my_include(age_ver, L, R).
-    my_maplist(justAge, R, A).
-
+    my_include(age_ver, L, R),
+    my_maplist(justName, R, A).
 
 
 
